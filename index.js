@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
-const port = 3001;
+const port = process.env.PORT || 8080;
 
 const {
 	sendDM,
@@ -24,6 +24,10 @@ const {
 	analyzeUserTweets,
 	verifyUserIsAdded,
 } = require("./utils");
+
+app.get("/", async (req, res) => {
+	res.send("EMPATWEET");
+});
 
 app.post("/getLatestTweet", async (req, res) => {
 	let screenName = req.body.screenName;
