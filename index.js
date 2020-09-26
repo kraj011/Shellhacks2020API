@@ -95,9 +95,9 @@ app.post("/getUserInfo", async (req, res) => {
 // });
 
 app.listen(port, () => {
-	console.log(`Shellhacks2020 app listening at http://localhost:${port}`);
-	// setInterval(() => {
-	// 	analyzeUserTweets();
-	// }, 300000);
-	// analyzeUserTweets();
+	console.log(`EMPATWEET app listening at http://localhost:${port}`);
+	setInterval(() => {
+		analyzeUserTweets();
+	}, 300000);
+	analyzeUserTweets();
 });
