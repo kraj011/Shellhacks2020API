@@ -30,9 +30,9 @@ const projectId = "helpbot-ghec";
 // languageCode: Indicates the language Dialogflow agent should use to detect intents
 const languageCode = "en";
 // Imports the Dialogflow library
-const dialogflow = require("@google-cloud/dialogflow");
-// Instantiates a session client
-const sessionClient = new dialogflow.SessionsClient();
+// const dialogflow = require("@google-cloud/dialogflow");
+// // Instantiates a session client
+// const sessionClient = new dialogflow.SessionsClient();
 
 const sendDM = (userId, message) => {
 	return new Promise((resolve, reject) => {

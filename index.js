@@ -68,27 +68,27 @@ app.post("/getUserInfo", async (req, res) => {
 		});
 });
 
-app.post("/sendMessage", async (req, res) => {
-	let message = req.body.message;
-	let sessionId = req.body.sessionId;
-	if (!sessionId || !message) {
-		res.set("Access-Control-Allow-Origin", "*").send({
-			error: "Please send a session ID and message",
-		});
-		return;
-	}
-	sendMessageToChatbot(message, sessionId)
-		.then((response) => {
-			res.set("Access-Control-Allow-Origin", "*").send({
-				response: response,
-			});
-		})
-		.catch((err) => {
-			res.set("Access-Control-Allow-Origin", "*").send({
-				error: "There was an error sending your message.",
-			});
-		});
-});
+// app.post("/sendMessage", async (req, res) => {
+// 	let message = req.body.message;
+// 	let sessionId = req.body.sessionId;
+// 	if (!sessionId || !message) {
+// 		res.set("Access-Control-Allow-Origin", "*").send({
+// 			error: "Please send a session ID and message",
+// 		});
+// 		return;
+// 	}
+// 	sendMessageToChatbot(message, sessionId)
+// 		.then((response) => {
+// 			res.set("Access-Control-Allow-Origin", "*").send({
+// 				response: response,
+// 			});
+// 		})
+// 		.catch((err) => {
+// 			res.set("Access-Control-Allow-Origin", "*").send({
+// 				error: "There was an error sending your message.",
+// 			});
+// 		});
+// });
 
 app.listen(port, () => {
 	console.log(`Shellhacks2020 app listening at http://localhost:${port}`);
