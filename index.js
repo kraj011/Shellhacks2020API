@@ -4,7 +4,11 @@ var cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+	bodyParser.urlencoded({
+		extended: true,
+	})
+);
 
 app.use(bodyParser.json());
 
@@ -12,17 +16,13 @@ app.use(cors());
 
 const port = 3001;
 
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-
-const adapter = new FileSync("db.json");
-const db = low(adapter);
-
 const {
 	sendDM,
 	getLatestTweet,
 	getUserInfo,
 	sendMessageToChatbot,
+	analyzeUserTweets,
+	verifyUserIsAdded,
 } = require("./utils");
 
 app.post("/getLatestTweet", async (req, res) => {
@@ -54,6 +54,7 @@ app.post("/getUserInfo", async (req, res) => {
 		});
 		return;
 	}
+	verifyUserIsAdded(screenName);
 	getUserInfo(screenName)
 		.then((response) => {
 			res.set("Access-Control-Allow-Origin", "*").send({
@@ -90,6 +91,9 @@ app.post("/sendMessage", async (req, res) => {
 });
 
 app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
-	// let users = db.get("users").value();
+	console.log(`Shellhacks2020 app listening at http://localhost:${port}`);
+	// setInterval(() => {
+	// 	analyzeUserTweets();
+	// }, 300000);
+	// analyzeUserTweets();
 });

@@ -1,3 +1,12 @@
 {
-    "users": ["dynxSZN", "twitterdev"]
+	"users": [
+		{
+			"name": "dynxSZN",
+			"latestTweet": "1309883957228470272"
+		},
+		{
+			"name": "lieugenebaba011",
+			"latestTweet": "1309750640109711361"
+		}
+	]
 }

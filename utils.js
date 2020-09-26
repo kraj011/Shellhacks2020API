@@ -1,3 +1,9 @@
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
+
+const adapter = new FileSync("db.json");
+const db = low(adapter);
+
 const Twit = require("twit");
 var T = new Twit({
 	consumer_key: process.env.CONSUMER_KEY,
@@ -43,11 +49,13 @@ const sendDM = (userId, message) => {
 				},
 			},
 		};
+
 		T.post("direct_messages/events/new", params)
 			.then((result) => {
 				resolve();
 			})
 			.catch((err) => {
+				console.log(err);
 				reject(err);
 			});
 	});
@@ -55,12 +63,12 @@ const sendDM = (userId, message) => {
 
 const getLatestTweet = (screenName) => {
 	return new Promise((resolve, reject) => {
-		T.post("statuses/user_timeline", {
-			screen_name: screenName,
+		T.get("search/tweets", {
+			q: `from:${screenName} -filter:retweets`,
 			count: 1,
 		})
 			.then((result) => {
-				resolve(result);
+				resolve(result.data.statuses[0]);
 			})
 			.catch((err) => {
 				reject(err);
@@ -97,7 +105,11 @@ const getUserInfo = (screenName) => {
 	});
 };
 
-const getSentimentForTweet = (message, sessionId) => {};
+const getSentimentForTweet = (message) => {
+	return new Promise((resolve, reject) => {
+		resolve(["sad", 1]);
+	});
+};
 
 const sendMessageToChatbot = (message, sessionId, contexts) => {
 	return new Promise(async (resolve, reject) => {
@@ -133,10 +145,75 @@ const sendMessageToChatbot = (message, sessionId, contexts) => {
 	});
 };
 
+const analyzeUserTweets = () => {
+	let users = db.get("users").value();
+	users.forEach((user) => {
+		console.log(user);
+		getLatestTweet(user.name).then((latestTweet) => {
+			if (latestTweet.id_str === user.latestTweet) {
+				return;
+			}
+			// New tweet found!
+			// Analyze sentiment
+
+			getSentimentForTweet(latestTweet.text).then(
+				([sentiment, magnitude]) => {
+					switch (sentiment) {
+						case "joy":
+							sendDM(
+								latestTweet.user.id_str,
+								"Well done tweeting something positive and promoting #HealthyConversations !"
+							);
+							break;
+						default:
+							if (magnitude >= 0.9) {
+								sendDM(
+									latestTweet.user.id_str,
+									`Hi friend! We noticed you were feeling a bit ${sentiment}, here's a cat GIF to cheer you up! https://giphy.com/gifs/4WSkQQjJPQoRq Share it with you friends and keep promoting #HealthyConversations ! If you want to talk to someone, make sure to call 1-800-662-HELP (4357) for a free, confidential way of sharing your thoughts!`
+								);
+							} else {
+								sendDM(
+									latestTweet.user.id_str,
+									`Hi friend! We noticed you were feeling a bit ${sentiment}, here's a cat GIF to cheer you up! https://giphy.com/gifs/4WSkQQjJPQoRq Share it with you friends and keep promoting #HealthyConversations !`
+								);
+							}
+							break;
+					}
+				}
+			);
+
+			// update user latest message id
+
+			db.get("users")
+				.find({
+					name: user.name,
+				})
+				.assign({
+					latestTweet: latestTweet.id_str,
+				})
+				.write();
+		});
+	});
+};
+
+const verifyUserIsAdded = (screenName) => {
+	let userIsAdded = db
+		.get("users")
+		.find({
+			name: screenName,
+		})
+		.value();
+	if (!userIsAdded) {
+		db.get("users").push({ name: screenName, latestTweet: "" }).write();
+	}
+};
+
 module.exports = {
 	sendDM,
 	getLatestTweet,
 	getUserInfo,
 	getLatestNTweets,
 	sendMessageToChatbot,
+	analyzeUserTweets,
+	verifyUserIsAdded,
 };

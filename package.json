@@ -14,5 +14,8 @@
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
     "twit": "^2.2.11"
+  },
+  "scripts": {
+    "devstart": "nodemon index.js --ignore 'db.json'"
   }
 }
