@@ -16,6 +16,7 @@
     "twit": "^2.2.11"
   },
   "scripts": {
-    "devstart": "nodemon index.js --ignore 'db.json'"
+    "devstart": "nodemon index.js --ignore 'db.json'",
+    "start": "node index.js"
   }
 }
