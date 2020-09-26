@@ -18,7 +18,12 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("db.json");
 const db = low(adapter);
 
-const { sendDM, getLatestTweet, getUserInfo } = require("./utils");
+const {
+	sendDM,
+	getLatestTweet,
+	getUserInfo,
+	sendMessageToChatbot,
+} = require("./utils");
 
 app.post("/getLatestTweet", async (req, res) => {
 	let screenName = req.body.screenName;
@@ -58,6 +63,28 @@ app.post("/getUserInfo", async (req, res) => {
 		.catch((err) => {
 			res.set("Access-Control-Allow-Origin", "*").send({
 				error: "There was an error retrieving your user information.",
+			});
+		});
+});
+
+app.post("/sendMessage", async (req, res) => {
+	let message = req.body.message;
+	let sessionId = req.body.sessionId;
+	if (!sessionId || !message) {
+		res.set("Access-Control-Allow-Origin", "*").send({
+			error: "Please send a session ID and message",
+		});
+		return;
+	}
+	sendMessageToChatbot(message, sessionId)
+		.then((response) => {
+			res.set("Access-Control-Allow-Origin", "*").send({
+				response: response,
+			});
+		})
+		.catch((err) => {
+			res.set("Access-Control-Allow-Origin", "*").send({
+				error: "There was an error sending your message.",
 			});
 		});
 });
