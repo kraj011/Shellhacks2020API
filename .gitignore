@@ -116,3 +116,5 @@ dist
 .pnp.*
 
 helpbot-ghec-b1214715eda6.json
+
+db.json

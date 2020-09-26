@@ -23,6 +23,7 @@ const {
 	sendMessageToChatbot,
 	analyzeUserTweets,
 	verifyUserIsAdded,
+	getLatestTweetsWithSentiment,
 } = require("./utils");
 
 app.get("/", async (req, res) => {
@@ -38,6 +39,27 @@ app.post("/getLatestTweet", async (req, res) => {
 		return;
 	}
 	getUserInfo(screenName)
+		.then((response) => {
+			res.set("Access-Control-Allow-Origin", "*").send({
+				response: response,
+			});
+		})
+		.catch((err) => {
+			res.set("Access-Control-Allow-Origin", "*").send({
+				error: "There was an error retrieving your user information.",
+			});
+		});
+});
+
+app.post("/getLatestTweetsWithSentiment", async (req, res) => {
+	let screenName = req.body.screenName;
+	if (!screenName) {
+		res.set("Access-Control-Allow-Origin", "*").send({
+			error: "Please send a screen name",
+		});
+		return;
+	}
+	getLatestTweetsWithSentiment(screenName)
 		.then((response) => {
 			res.set("Access-Control-Allow-Origin", "*").send({
 				response: response,
@@ -100,4 +122,7 @@ app.listen(port, () => {
 		analyzeUserTweets();
 	}, 300000);
 	analyzeUserTweets();
+	// getLatestTweetsWithSentiment("lieugenebaba011").then((tweets) =>
+	// 	console.log(tweets)
+	// );
 });

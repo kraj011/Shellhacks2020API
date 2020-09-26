@@ -63,12 +63,13 @@ const sendDM = (userId, message) => {
 
 const getLatestTweet = (screenName) => {
 	return new Promise((resolve, reject) => {
-		T.get("search/tweets", {
-			q: `from:${screenName} -filter:retweets`,
+		T.get("statuses/user_timeline", {
+			screen_name: screenName,
 			count: 1,
+			include_rts: false,
 		})
 			.then((result) => {
-				resolve(result.data.statuses[0]);
+				resolve(result.data[0]);
 			})
 			.catch((err) => {
 				reject(err);
@@ -78,12 +79,13 @@ const getLatestTweet = (screenName) => {
 
 const getLatestNTweets = (screenName, numberOfTweets) => {
 	return new Promise((resolve, reject) => {
-		T.post("statuses/user_timeline", {
+		T.get("statuses/user_timeline", {
 			screen_name: screenName,
 			count: numberOfTweets,
+			include_rts: false,
 		})
 			.then((result) => {
-				resolve(result);
+				resolve(result.data);
 			})
 			.catch((err) => {
 				reject(err);
@@ -208,6 +210,25 @@ const verifyUserIsAdded = (screenName) => {
 	}
 };
 
+const getLatestTweetsWithSentiment = (screenName) => {
+	return new Promise(async (resolve, reject) => {
+		let tweets = [];
+
+		await getLatestNTweets(screenName, 10).then(async (latestTweets) => {
+			for (let i = 0; i < latestTweets.length; i++) {
+				let sentiment = await getSentimentForTweet(
+					latestTweets[i].text
+				);
+				tweets.push({
+					text: latestTweets[i].text,
+					sentiment: sentiment,
+				});
+			}
+		});
+		resolve(tweets);
+	});
+};
+
 module.exports = {
 	sendDM,
 	getLatestTweet,
@@ -216,4 +237,5 @@ module.exports = {
 	sendMessageToChatbot,
 	analyzeUserTweets,
 	verifyUserIsAdded,
+	getLatestTweetsWithSentiment,
 };
