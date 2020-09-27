@@ -115,6 +115,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-helpbot-ghec-b1214715eda6.json
-
 db.json
