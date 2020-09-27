@@ -131,8 +131,6 @@ const sendMessageToChatbot = (message, sessionId, contexts) => {
             projectId,
             sessionId
         );
-
-
         const request = {
             session: sessionPath,
             queryInput: {
@@ -170,25 +168,47 @@ const analyzeUserTweets = () => {
             getSentimentForTweet(latestTweet.text).then(
                 ([sentiment, magnitude]) => {
                     switch (sentiment) {
-                        case "joy":
-                            sendDM(
-                                latestTweet.user.id_str,
-                                "Well done tweeting something positive and promoting #HealthyConversations !"
-                            );
-                            break;
-                        default:
-                            if (magnitude >= 0.9) {
+                        case "happy":
+                            if (magnitude >= 0.5) {
                                 sendDM(
                                     latestTweet.user.id_str,
-                                    `Hi friend! We noticed you were feeling a bit ${sentiment}, here's a cat GIF to cheer you up! https://giphy.com/gifs/4WSkQQjJPQoRq Share it with you friends and keep promoting #HealthyConversations ! If you want to talk to someone, make sure to call 1-800-662-HELP (4357) for a free, confidential way of sharing your thoughts!`
-                                );
-                            } else {
-                                sendDM(
-                                    latestTweet.user.id_str,
-                                    `Hi friend! We noticed you were feeling a bit ${sentiment}, here's a cat GIF to cheer you up! https://giphy.com/gifs/4WSkQQjJPQoRq Share it with you friends and keep promoting #HealthyConversations !`
+                                    `😃😃😃. Thanks for tweeting something positive! Here's an adorable GIF, you deserve it!: https://tenor.com/search/cute-animals-gifs.`
                                 );
                             }
                             break;
+                        case "angry":
+                            if (magnitude >= 0.5) {
+                                sendDM(
+                                    latestTweet.user.id_str,
+                                    `We noticed a bit of 😡 in your recent tweet. Here's an adorable GIF, just for you!: https://tenor.com/view/dogs-watermelon-hungry-nomnomnom-gif-3426752. Please try and take a deep breathe, and don't be afraid to share how you're feeling with people who can help so we can all keep promoting #HealthyConversations!`
+                                );
+                            }
+                            break;
+                        case "sad":
+                            if (magnitude >= 0.9) {
+                                sendDM(
+                                    latestTweet.user.id_str,
+                                    `We noticed some heavy 😞 in your recent tweet. Here's an adorable GIF, just for you!: https://giphy.com/gifs/4Zo41lhzKt6iZ8xff9. Remember that you are loved, and don't be afraid to share how you're feeling with people who can help so we can all keep promoting #HealthyConversations! If you would like, please call the free hotline 1-800-273-8255 to talk it out with someone who cares.`
+                                );
+                            } else if (magnitude >= 0.5) {
+                                sendDM(
+                                    latestTweet.user.id_str,
+                                    `We noticed a bit of 😞 in your recent tweet. Here's an adorable GIF, just for you!: https://giphy.com/gifs/4Zo41lhzKt6iZ8xff9. We're also sending virtual some 🤗s right your way. Don't be afraid to share how you're feeling with people who can help so we can all keep promoting #HealthyConversations!`
+                                );
+                            }
+                            break;
+                        case "scared":
+                            if (magnitude >= 0.5) {
+                                sendDM(
+                                    latestTweet.user.id_str,
+                                    `We noticed a bit of 😨 in your recent tweet. Here's an adorable GIF, just for you!: https://giphy.com/explore/cute-animals-gif. We know you'll get through this. Don't be afraid to share how you're feeling with people who can help so we can all keep promoting #HealthyConversations!`
+                                );
+                            }
+                        default:
+                            sendDM(
+                                latestTweet.user.id_str,
+                                `Error occurred. Awwkwaaaaaard...`
+                            );
                     }
                 }
             );
