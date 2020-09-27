@@ -120,7 +120,6 @@ const getSentimentForTweet = (message) => {
         });
         let payload = response.payload;
         payload.sort((s1, s2) => s1.classification.score > s2.classification.score)
-        console.log(payload)
         resolve([payload[0].displayName, payload[0].classification.score]);
     });
 };
