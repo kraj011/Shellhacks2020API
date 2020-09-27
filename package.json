@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/automl": "^2.2.0",
     "@google-cloud/dialogflow": "^3.3.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

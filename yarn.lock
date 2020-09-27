@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@google-cloud/automl@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/automl/-/automl-2.2.0.tgz#750c5ca5a642ecc169c47e2514ec491fbf2fae48"
+  integrity sha512-REbEVIF1S8Kcl2qvziIqe0Q0/6CirrV6Jm5tAXHtI6UVoOvlNDfgoinldTWLBNPnpdKFjtZKR6umYM0Ieqhwzg==
+  dependencies:
+    google-gax "^2.1.0"
+
 "@google-cloud/dialogflow@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@google-cloud/dialogflow/-/dialogflow-3.3.0.tgz#8623bbf93311889e868fa25e6fe71d6137667acb"
@@ -587,7 +594,7 @@ google-auth-library@^6.0.0:
     jws "^4.0.0"
     lru-cache "^6.0.0"
 
-google-gax@^2.4.1:
+google-gax@^2.1.0, google-gax@^2.4.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/google-gax/-/google-gax-2.9.0.tgz#84edef8715d82c0f91a6e5485b8f2803d2690f00"
   integrity sha512-MFMwA7Fb8PEwjnYwfGXjZMidCNyMl3gSnvS/+kS8TQioJZQDpzK+W3dmwyNyig/U13+kbABqDnbkkAXJ5NiUkw==
