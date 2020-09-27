@@ -204,11 +204,13 @@ const analyzeUserTweets = () => {
                                     `We noticed a bit of 😨 in your recent tweet. Here's an adorable GIF, just for you!: https://giphy.com/explore/cute-animals-gif. We know you'll get through this. Don't be afraid to share how you're feeling with people who can help so we can all keep promoting #HealthyConversations!`
                                 );
                             }
+                            break;
                         default:
                             sendDM(
                                 latestTweet.user.id_str,
                                 `Error occurred. Awwkwaaaaaard...`
                             );
+                            break;
                     }
                 }
             );
