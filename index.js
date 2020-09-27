@@ -34,7 +34,7 @@ app.post("/getLatestTweet", async (req, res) => {
 	let screenName = req.body.screenName;
 	if (!screenName) {
 		res.set("Access-Control-Allow-Origin", "*").send({
-			error: "Please send a screen name",
+			error: "Please send a screen name.",
 		});
 		return;
 	}
@@ -55,7 +55,7 @@ app.post("/getLatestTweetsWithSentiment", async (req, res) => {
 	let screenName = req.body.screenName;
 	if (!screenName) {
 		res.set("Access-Control-Allow-Origin", "*").send({
-			error: "Please send a screen name",
+			error: "Please send a screen name.",
 		});
 		return;
 	}
@@ -76,7 +76,7 @@ app.post("/getUserInfo", async (req, res) => {
 	let screenName = req.body.screenName;
 	if (!screenName) {
 		res.set("Access-Control-Allow-Origin", "*").send({
-			error: "Please send a screen name",
+			error: "Please send a screen name.",
 		});
 		return;
 	}
@@ -117,7 +117,7 @@ app.post("/getUserInfo", async (req, res) => {
 // });
 
 app.listen(port, () => {
-	console.log(`EMPATWEET app listening at http://localhost:${port}`);
+	console.log(`EMPATWEET app listening at http://localhost:${port}.`);
 	setInterval(() => {
 		analyzeUserTweets();
 	}, 300000);
